@@ -3,10 +3,7 @@ import React from "react";
 
 const AboutSection = () => {
   return (
-    <section
-      id="about"
-      className="min-h-screen pt-20 scroll-mt-14 lg:scroll-mt-[60px]"
-    >
+    <>
       <h2 className="text-3xl font-bold mb-4">About Me</h2>
       <p className="text-lg">
         I'm a passionate web developer with experience in React and Next.js.
@@ -22,7 +19,7 @@ const AboutSection = () => {
         <li>Database design and management with MongoDB and PostgreSQL</li>
         <li>Cloud deployment and DevOps with AWS and Docker</li>
       </ul>
-    </section>
+    </>
   );
 };
 

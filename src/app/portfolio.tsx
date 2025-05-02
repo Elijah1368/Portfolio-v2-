@@ -41,16 +41,25 @@ export default function Portfolio() {
   React.useEffect(() => {
     const observerOptions = {
       root: null,
-      rootMargin: "-50% 0px", // Consider element in center of viewport
-      threshold: 0,
+      rootMargin: "-20% 0px", // Less restrictive margin
+      threshold: 0.3, // Require 30% of the element to be visible
     };
-
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setActiveSection(entry.target.id);
+      // Find the entry with the highest intersection ratio
+      const visibleEntries = entries.filter((entry) => entry.isIntersecting);
+
+      if (visibleEntries.length > 0) {
+        // Sort by intersection ratio to get the most visible section
+        const mostVisible = visibleEntries.sort(
+          (a, b) => b.intersectionRatio - a.intersectionRatio
+        )[0];
+
+        // Set the active section
+        if (mostVisible && mostVisible.target.id) {
+          setActiveSection(mostVisible.target.id);
+          console.log("Setting active section to:", mostVisible.target.id); // Debug log
         }
-      });
+      }
     };
 
     const observer = new IntersectionObserver(
@@ -61,14 +70,16 @@ export default function Portfolio() {
     // Observe all sections
     sections.forEach((section) => {
       const element = document.getElementById(section.id);
-      if (element) observer.observe(element);
+      if (element) {
+        observer.observe(element);
+        console.log("Observing section:", section.id); // Debug log
+      } else {
+        console.warn("Section element not found:", section.id); // Debug warning
+      }
     });
 
     return () => {
-      sections.forEach((section) => {
-        const element = document.getElementById(section.id);
-        if (element) observer.unobserve(element);
-      });
+      observer.disconnect(); // Simpler cleanup
     };
   }, []);
 
@@ -124,23 +135,58 @@ export default function Portfolio() {
               </SidebarContent>
             </Sidebar>
 
-            <main className="flex-1 overflow-y-auto">
+            <main>
               <header className="sticky top-0 z-10 flex h-14 items-center bg-background px-4 lg:h-[60px]">
                 <SidebarTrigger className="lg:hidden">
                   <Menu className="h-6 w-6" />
                   <span className="sr-only">Toggle sidebar</span>
                 </SidebarTrigger>
                 <h1 className="text-lg font-semibold">
-                  {sections.find((s) => s.id === activeSection)?.title}
+                  {
+                    sections.find((s) => {
+                      console.log(activeSection);
+                      console.debug("id", s.id);
+                      return s.id === activeSection;
+                    })?.title
+                  }
                 </h1>
               </header>
 
               <div className="px-4 pb-20">
-                <HomeSection />
-                <AboutSection />
-                <ExperienceSection />
-                <ProjectsSection />
-                <ContactSection />
+                <section
+                  id="home"
+                  key="home"
+                  className="min-h-screen pt-20 scroll-mt-14 lg:scroll-mt-[60px]"
+                >
+                  <HomeSection />
+                </section>
+                <section
+                  id="about"
+                  key="about"
+                  className="min-h-screen pt-20 scroll-mt-14 lg:scroll-mt-[60px]"
+                >
+                  <AboutSection />
+                </section>
+                <section
+                  className="min-h-screen pt-20 scroll-mt-14 lg:scroll-mt-[60px]"
+                  id="experience"
+                  key="experience"
+                  data-section="experience"
+                >
+                  <ExperienceSection />
+                </section>
+                <section
+                  id="projects"
+                  className="min-h-screen pt-20 scroll-mt-14 lg:scroll-mt-[60px]"
+                >
+                  <ProjectsSection />
+                </section>
+                <section
+                  id="contact"
+                  className="min-h-screen pt-20 pb-20 scroll-mt-14 lg:scroll-mt-[60px]"
+                >
+                  <ContactSection />
+                </section>
               </div>
             </main>
           </div>

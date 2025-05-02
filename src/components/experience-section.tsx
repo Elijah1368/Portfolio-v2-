@@ -87,12 +87,8 @@ export function ExperienceSection({
   const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
 
   return (
-    <section
-      className="py-16 px-4 md:px-6 lg:px-8 bg-background"
-      id="experience"
-      ref={sectionRef}
-    >
-      <div className="max-w-4xl mx-auto">
+    <>
+      <div className="max-w-4xl mx-auto" ref={sectionRef}>
         <motion.h2
           className="text-3xl font-bold mb-2"
           initial={{ opacity: 0, y: 20 }}
@@ -159,7 +155,7 @@ export function ExperienceSection({
 
                   <p className="text-muted-foreground">{exp.description}</p>
 
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 min-h-[32px]">
                     {exp.skills.map((skill) => (
                       <Badge
                         key={skill}
@@ -180,6 +176,6 @@ export function ExperienceSection({
           ))}
         </div>
       </div>
-    </section>
+    </>
   );
 }
