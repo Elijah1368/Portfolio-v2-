@@ -1,26 +1,76 @@
-// components/sections/AboutSection.jsx
-import React from "react";
+"use client";
+import * as React from "react";
+import { motion, useInView } from "framer-motion";
 
-const AboutSection = () => {
+export default function AboutSection() {
+  const sectionRef = React.useRef(null);
+  const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
+
   return (
-    <>
-      <h2 className="text-3xl font-bold mb-4">About Me</h2>
-      <p className="text-lg">
-        I'm a passionate web developer with experience in React and Next.js.
-      </p>
-      <p className="mt-4">
-        With over 5 years of experience in the field, I've worked on a variety
-        of projects ranging from small business websites to large-scale
-        enterprise applications. My expertise includes:
-      </p>
-      <ul className="list-disc pl-5 mt-2">
-        <li>Front-end development with React, Next.js, and TypeScript</li>
-        <li>Back-end development with Node.js and Express</li>
-        <li>Database design and management with MongoDB and PostgreSQL</li>
-        <li>Cloud deployment and DevOps with AWS and Docker</li>
-      </ul>
-    </>
-  );
-};
+    <div className="max-w-4xl mx-auto" ref={sectionRef}>
+      <motion.h2
+        className="text-xl font-extrabold text-primary mb-2"
+        initial={{ opacity: 0, y: 20 }}
+        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+        transition={{ duration: 0.5 }}
+      >
+        About Me
+      </motion.h2>
+      <motion.p
+        className="text-muted-foreground mb-8"
+        initial={{ opacity: 0, y: 20 }}
+        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+        transition={{ duration: 0.5, delay: 0.1 }}
+      >
+        Software engineer by day, cat whisperer by night. Always shipping.
+      </motion.p>
+      <motion.div
+        className="space-y-6"
+        initial={{ opacity: 0, y: 20 }}
+        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        <motion.p
+          className="text-base font-medium"
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.3, delay: 0.3 }}
+        >
+          I'm Elijah, a software engineer at Qualcomm where I build tools that
+          help hardware engineers do their best work. I enjoy the challenge of
+          taking complex problems and turning them into elegant solutions. When
+          I'm not writing code, you'll find me trying to convince my cat that 3
+          AM is not the optimal time to practice parkour across my apartment.
+        </motion.p>
 
-export default AboutSection;
+        <motion.p
+          className="text-muted-foreground"
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.3, delay: 0.4 }}
+        >
+          With a CS degree from University of Washington and experience in both
+          frontend and backend development, I work on creating tools that make
+          meaningful improvements to how engineers interact with data. My
+          technical toolkit includes React, TypeScript, Python, and a growing
+          collection of cat toys that are inexplicably ignored in favor of empty
+          cardboard boxes.
+        </motion.p>
+
+        <motion.p
+          className="text-muted-foreground"
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.3, delay: 0.5 }}
+        >
+          I believe in shipping code that solves real problems, iterating
+          quickly, and learning constantly. Whether I'm optimizing database
+          queries, modernizing frontends, or figuring out why the neighborhood
+          strays have unanimously elected my my parking spot as their official
+          meeting grounds, I'm drawn to puzzles that matter and solutions that
+          endure.
+        </motion.p>
+      </motion.div>
+    </div>
+  );
+}

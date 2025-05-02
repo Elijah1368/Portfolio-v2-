@@ -1,63 +1,97 @@
 "use client";
-
-import * as React from "react";
-import {
-  Award,
-  Briefcase,
-  GalleryVerticalEnd,
-  Home,
-  Mail,
-  Menu,
-  User,
-} from "lucide-react";
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Award, Briefcase, Menu, User } from "lucide-react";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { ThemeProvider, ThemeToggle } from "@/components/theme-provider";
 import AboutSection from "@/components/about-section";
-import ContactSection from "@/components/contact-section";
 import { ExperienceSection } from "@/components/experience-section";
-import HomeSection from "@/components/home-section";
 import ProjectsSection from "@/components/projects-section";
+import PortfolioSidebar, { type Section } from "@/components/portfolio-sidebar";
 
-// Assuming these are defined elsewhere in your code
-const sections = [
-  { id: "home", title: "Home", icon: Home },
+const sections: Section[] = [
   { id: "about", title: "About", icon: User },
   { id: "experience", title: "Experience", icon: Award },
   { id: "projects", title: "Projects", icon: Briefcase },
-  { id: "contact", title: "Contact", icon: Mail },
 ];
 
-export default function Portfolio() {
-  const [activeSection, setActiveSection] = React.useState("home");
+const MOBILE_HEADER_HEIGHT = 56; // Corresponds to h-14
+const OBSERVER_DEBOUNCE_MS = 200;
+const SCROLL_IGNORE_OBSERVER_MS = 800; // How long to ignore observer after a click (adjust based on smooth scroll duration)
 
-  React.useEffect(() => {
+export default function Portfolio() {
+  const [activeSection, setActiveSection] = useState(sections[0]?.id ?? "");
+  const activeSectionRef = useRef(activeSection);
+  const observerDebounceTimer = useRef<NodeJS.Timeout | null>(null);
+  // Ref to track if we are scrolling due to a click
+  const isClickScrolling = useRef(false);
+  const clickScrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Keep activeSectionRef updated
+  useEffect(() => {
+    activeSectionRef.current = activeSection;
+  }, [activeSection]);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (clickScrollTimeoutRef.current) {
+        clearTimeout(clickScrollTimeoutRef.current);
+      }
+      if (observerDebounceTimer.current) {
+        clearTimeout(observerDebounceTimer.current);
+      }
+    };
+  }, []);
+
+  // Debounced setActiveSection for Observer
+  const debouncedSetActiveSection = useCallback((sectionId: string) => {
+    if (observerDebounceTimer.current) {
+      clearTimeout(observerDebounceTimer.current);
+    }
+    observerDebounceTimer.current = setTimeout(() => {
+      // *** Check if we should ignore the observer ***
+      if (isClickScrolling.current) {
+        // console.log("Observer ignored due to recent click scroll");
+        return;
+      }
+
+      if (activeSectionRef.current !== sectionId) {
+        // console.log("Debounced Observer setting active section to:", sectionId);
+        setActiveSection(sectionId);
+      }
+    }, OBSERVER_DEBOUNCE_MS);
+  }, []); // Empty dependency array is fine here
+
+  // Intersection Observer Setup
+  useEffect(() => {
+    // *** Adjust rootMargin and threshold ***
     const observerOptions = {
       root: null,
-      rootMargin: "-20% 0px", // Less restrictive margin
-      threshold: 0.3, // Require 30% of the element to be visible
+      // Align top margin exactly below the mobile header
+      rootMargin: `-${MOBILE_HEADER_HEIGHT}px 0px -25% 0px`, // Increased negative bottom margin slightly
+      threshold: 0.2, // *** Increased threshold: 40% must be visible ***
     };
+
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
-      // Find the entry with the highest intersection ratio
+      // *** Check if we should ignore the observer (early exit) ***
+      if (isClickScrolling.current) {
+        // console.log("Observer callback ignored during click scroll");
+        return;
+      }
+
       const visibleEntries = entries.filter((entry) => entry.isIntersecting);
 
       if (visibleEntries.length > 0) {
-        // Sort by intersection ratio to get the most visible section
         const mostVisible = visibleEntries.sort(
           (a, b) => b.intersectionRatio - a.intersectionRatio
         )[0];
 
-        // Set the active section
-        if (mostVisible && mostVisible.target.id) {
-          setActiveSection(mostVisible.target.id);
-          console.log("Setting active section to:", mostVisible.target.id); // Debug log
+        if (
+          mostVisible?.target?.id &&
+          mostVisible.target.id !== activeSectionRef.current
+        ) {
+          // Use the debounced function
+          debouncedSetActiveSection(mostVisible.target.id);
         }
       }
     };
@@ -67,128 +101,117 @@ export default function Portfolio() {
       observerOptions
     );
 
-    // Observe all sections
     sections.forEach((section) => {
       const element = document.getElementById(section.id);
       if (element) {
         observer.observe(element);
-        console.log("Observing section:", section.id); // Debug log
       } else {
-        console.warn("Section element not found:", section.id); // Debug warning
+        console.warn("Section element not found for observing:", section.id);
       }
     });
 
     return () => {
-      observer.disconnect(); // Simpler cleanup
+      observer.disconnect();
+      if (observerDebounceTimer.current) {
+        clearTimeout(observerDebounceTimer.current);
+      }
     };
-  }, []);
+  }, [debouncedSetActiveSection]); // Dependency array includes the debounced function
 
+  // Simplified Scroll Function (no changes needed here)
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
     }
+  };
+
+  // Handler for sidebar item selection
+  const handleSelectItem = (sectionId: string) => {
+    // --- Ignore Observer START ---
+    isClickScrolling.current = true;
+    // Clear any existing timeout to reset the flag
+    if (clickScrollTimeoutRef.current) {
+      clearTimeout(clickScrollTimeoutRef.current);
+    }
+    // --- End Ignore Observer START ---
+
+    // Clear any pending observer *update* timer
+    if (observerDebounceTimer.current) {
+      clearTimeout(observerDebounceTimer.current);
+    }
+
+    // Set state immediately
+    // console.log("Click setting active section to:", sectionId);
+    setActiveSection(sectionId);
+
+    // Scroll
+    scrollToSection(sectionId);
+
+    // --- Ignore Observer END ---
+    // Set a timer to re-enable observer updates after scroll likely finishes
+    clickScrollTimeoutRef.current = setTimeout(() => {
+      isClickScrolling.current = false;
+      // console.log("Observer re-enabled");
+    }, SCROLL_IGNORE_OBSERVER_MS);
+    // --- End Ignore Observer END ---
   };
 
   return (
     <div className="flex justify-center w-full bg-background">
-      {/* Max-width container to center the entire layout */}
       <div className="w-full max-w-4xl relative">
-        <SidebarProvider>
-          <div className="flex h-screen w-full">
-            <Sidebar
-              variant="floating"
-              className="left-[var(--sidebar-offset)] md:left-[var(--sidebar-offset)]"
-            >
-              <SidebarHeader>
-                <SidebarMenu>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton size="lg">
-                      <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                        <GalleryVerticalEnd className="size-4" />
-                      </div>
-                      <div className="flex flex-col gap-0.5 leading-none">
-                        <span className="font-semibold">John Doe</span>
-                        <span className="text-xs">Web Developer</span>
-                      </div>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                </SidebarMenu>
-              </SidebarHeader>
-              <SidebarContent>
-                <SidebarMenu>
-                  {sections.map((section) => (
-                    <SidebarMenuItem key={section.id}>
-                      <SidebarMenuButton
-                        isActive={activeSection === section.id}
-                        onClick={() => {
-                          setActiveSection(section.id);
-                          scrollToSection(section.id);
-                        }}
-                      >
-                        <section.icon className="mr-2 h-4 w-4" />
-                        <span>{section.title}</span>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ))}
-                </SidebarMenu>
-              </SidebarContent>
-            </Sidebar>
+        {/* @ts-ignore */}
+        <SidebarProvider style={{ "--sidebar-background": "transparent" }}>
+          <div className="flex w-full">
+            {/* Sidebar */}
+            <PortfolioSidebar
+              sections={sections}
+              activeSection={activeSection}
+              onSelectItem={handleSelectItem}
+              userName="Elijah Amian"
+              userTitle="Fullstack Software Engineer"
+            />
 
-            <main>
-              <header className="sticky top-0 z-10 flex h-14 items-center bg-background px-4 lg:h-[60px]">
-                <SidebarTrigger className="lg:hidden">
+            {/* Main Content Area */}
+            <div className="flex-1 flex flex-col min-w-0">
+              {/* Mobile Header */}
+              <header className="md:hidden sticky top-0 z-10 flex h-14 items-center bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+                <SidebarTrigger className="mr-4">
                   <Menu className="h-6 w-6" />
                   <span className="sr-only">Toggle sidebar</span>
                 </SidebarTrigger>
-                <h1 className="text-lg font-semibold">
-                  {
-                    sections.find((s) => {
-                      console.log(activeSection);
-                      console.debug("id", s.id);
-                      return s.id === activeSection;
-                    })?.title
-                  }
+                <h1 className="flex-1 text-lg font-semibold truncate">
+                  {sections.find((s) => s.id === activeSection)?.title ?? ""}
                 </h1>
               </header>
 
-              <div className="px-4 pb-20">
-                <section
-                  id="home"
-                  key="home"
-                  className="min-h-screen pt-20 scroll-mt-14 lg:scroll-mt-[60px]"
-                >
-                  <HomeSection />
-                </section>
-                <section
-                  id="about"
-                  key="about"
-                  className="min-h-screen pt-20 scroll-mt-14 lg:scroll-mt-[60px]"
-                >
-                  <AboutSection />
-                </section>
-                <section
-                  className="min-h-screen pt-20 scroll-mt-14 lg:scroll-mt-[60px]"
-                  id="experience"
-                  key="experience"
-                  data-section="experience"
-                >
-                  <ExperienceSection />
-                </section>
-                <section
-                  id="projects"
-                  className="min-h-screen pt-20 scroll-mt-14 lg:scroll-mt-[60px]"
-                >
-                  <ProjectsSection />
-                </section>
-                <section
-                  id="contact"
-                  className="min-h-screen pt-20 pb-20 scroll-mt-14 lg:scroll-mt-[60px]"
-                >
-                  <ContactSection />
-                </section>
-              </div>
-            </main>
+              {/* Content Sections */}
+              <main className="flex-1">
+                <div className="px-12 pb-20 flex flex-col gap-32">
+                  {/* Sections */}
+                  <section id="about" key="about" className="pt-4 md:pt-4 ">
+                    <AboutSection />
+                  </section>
+                  <section
+                    id="experience"
+                    key="experience"
+                    className="pt-4 md:pt-4 "
+                  >
+                    <ExperienceSection />
+                  </section>
+                  <section
+                    id="projects"
+                    key="projects"
+                    className="pt-4 md:pt-4 "
+                  >
+                    <ProjectsSection />
+                  </section>
+                </div>
+              </main>
+            </div>
           </div>
         </SidebarProvider>
       </div>

@@ -86,3 +86,31 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+[data-sidebar="sidebar"],
+[data-sidebar="sidebar"] *,
+.sidebar-wrapper,
+.sidebar-wrapper * {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.sidebar-no-border {
+  --sidebar-border: transparent !important;
+  border: 0 !important;
+  border-width: 0 !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+[data-sidebar="menu-button"]:hover {
+  background-color: transparent !important;
+}
+
+[data-sidebar="menu-button"][data-active="true"] {
+  background-color: transparent !important;
+}
+
+.shaped {
+  shape-outside: circle(50%);
+}
