@@ -7,17 +7,17 @@ export default function AboutSection() {
   const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
 
   return (
-    <div className="max-w-4xl mx-auto" ref={sectionRef}>
+    <div className="max-w-4xl mx-auto " ref={sectionRef}>
       <motion.h2
-        className="text-xl font-extrabold text-primary mb-2"
+        className="text-2xl font-light mb-2 text-muted-foreground"
         initial={{ opacity: 0, y: 20 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
         transition={{ duration: 0.5 }}
       >
-        About Me
+        ABOUT ME
       </motion.h2>
       <motion.p
-        className="text-muted-foreground mb-8"
+        className="mb-8 text-primary"
         initial={{ opacity: 0, y: 20 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
         transition={{ duration: 0.5, delay: 0.1 }}
@@ -31,7 +31,7 @@ export default function AboutSection() {
         transition={{ duration: 0.5, delay: 0.2 }}
       >
         <motion.p
-          className="text-base font-medium"
+          className="text-primary"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.3, delay: 0.3 }}
@@ -44,7 +44,7 @@ export default function AboutSection() {
         </motion.p>
 
         <motion.p
-          className="text-muted-foreground"
+          className=""
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.3, delay: 0.4 }}

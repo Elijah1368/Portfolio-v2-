@@ -116,7 +116,7 @@ const defaultExperiences: ExperienceItem[] = [
     startDate: "December 2023",
     endDate: "Present",
     description:
-      "Supercharged an in-house Hardware Verification tool that serves 2,000+ engineers. Crushed performance bottlenecks with concurrent architecture using Motor and Redis, boosting data processing by 700%. Delivered key features representing 50% of functionality and modernized the codebase with Pydantic, Beanie ODM, TypeScript, Redux, and React Query. Accelerated development by migrating from CRA to Vite and implemented robust CI/CD with GitLab.",
+      "At Qualcomm's NuviaCPU team (a startup they acquired), I helped replace expensive third-party verification software, eliminating $2M in annual costs. I engineered a concurrent architecture that improved data processing speeds by 700% for our 5M+ daily records, while developing half the tool's core functionality that supported projects like the Snapdragon X Elite processor. I also modernized our tech stack with Pydantic/Motor and Vite/TypeScript, implemented a GitLab pipeline that enabled daily releases instead of weekly ones. Working with this former startup team gave me valuable experience in developing sotware for engineers.",
     skills: [
       "Python",
       "TypeScript",
@@ -136,7 +136,7 @@ const defaultExperiences: ExperienceItem[] = [
     startDate: "June 2022",
     endDate: "September 2022",
     description:
-      "Built an internal access management platform that revolutionized the onboarding process by automating project access provisioning for new employees. Transformed UI designs into seamless experiences using React and Next.js.",
+      "Our team needed an internal access management platform, so I took on the implementation challenge. I developed a solution that enabled managers to automate project access provisioning for new employees, significantly reducing onboarding time. The platform transformed a tedious manual process into a streamlined workflow, allowing new team members to become productive immediately rather than waiting days for proper access. This tool quickly became essential to our organization's efficiency.",
     skills: ["HTML", "CSS", "JavaScript", "React", "Next.js"],
     link: "https://qualcomm.com",
   },
@@ -148,7 +148,7 @@ const defaultExperiences: ExperienceItem[] = [
     startDate: "November 2022",
     endDate: "March 2023",
     description:
-      "Crafted an engaging landing page for the NIH's Morphic Project using React, creating a digital gateway for this important scientific initiative.",
+      "When the NIH's Morphic Project needed a digital presence, I had the opportunity to build their landing page from scratch. The page served as a digital gateway to this important initiative, making complex research accessible to both the scientific community and curious visitors.",
     skills: ["React", "JavaScript", "UI Design"],
     link: "https://morphic.bio/",
   },
@@ -160,7 +160,7 @@ const defaultExperiences: ExperienceItem[] = [
     startDate: "July 2022",
     endDate: "September 2022",
     description:
-      "Tackled complex legacy code challenges by migrating from jQuery 1.4 to 3.6, meticulously resolving breaking changes while conducting stress testing to uncover performance bottlenecks.",
+      "In my first professional role, I was thrown into the deep end with a 20+ year old healthcare platform codebase. I executed a critical jQuery migration from 1.4 to 3.6, resolving over 30 breaking changes that enhanced security and improved page load times. I also implemented backend stress testing to identify performance bottlenecks—an intense but valuable experience that rapidly developed my skills in managing complex legacy systems.",
     skills: ["jQuery", "JavaScript", "Performance Optimization", "Testing"],
     link: "https://www.mcg.com/",
   },

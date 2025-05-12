@@ -53,29 +53,25 @@ const PortfolioSidebar: React.FC<PortfolioSidebarProps> = ({
 
   return (
     <Sidebar
-      className="left-[var(--sidebar-offset)] md:left-[var(--sidebar-offset)] sidebar-no-border border-0 border-none shadow-none z-20 pt-0.5" // Added z-index just in case
-      style={
-        {
-          "--sidebar-background": "transparent",
-          "--sidebar-border": "transparent",
-          border: "none",
-          boxShadow: "none",
-        } as React.CSSProperties
-      }
+      className={`left-[var(--sidebar-offset)] md:left-[var(--sidebar-offset)] sidebar-no-border border-0 border-none shadow-none z-20 py-12 `} // Added z-index just in case
     >
       <div
         data-sidebar="sidebar" // Keep data attribute if needed for styling/selection
-        className="flex h-full w-full flex-col bg-transparent shadow-none border-0 border-none sidebar-no-border no-scrollbar"
+        className="flex h-full w-full flex-col bg-transparent shadow-none border-0 border-none sidebar-no-border no-scrollbar font-sans"
         style={{ border: "none", boxShadow: "none" }}
       >
         {/* Sidebar Header with User Info and Theme Toggle */}
-        <SidebarHeader className="bg-transparent border-0 border-none sidebar-no-border">
+        <SidebarHeader className="bg-transparent border-0 border-none sidebar-no-border font-sans">
           <div className="flex items-center justify-between w-full py-2">
             <div className="flex flex-col">
-              <span className="font-semibold">{userName}</span>
-              <span className="text-xs text-muted-foreground">{userTitle}</span>
+              <span className="font-semibold font-sans">{userName}</span>
+              <span className="text-xs text-muted-foreground font-sans">
+                {userTitle}
+              </span>
             </div>
-            <ThemeToggle />
+            <div className="md:mr-8">
+              <ThemeToggle />
+            </div>
           </div>
         </SidebarHeader>
 

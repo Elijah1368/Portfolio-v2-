@@ -9,9 +9,9 @@ import ProjectsSection from "@/components/projects-section";
 import PortfolioSidebar, { type Section } from "@/components/portfolio-sidebar";
 
 const sections: Section[] = [
-  { id: "about", title: "About", icon: User },
+  { id: "about", title: "About Me", icon: User },
   { id: "experience", title: "Experience", icon: Award },
-  { id: "projects", title: "Projects", icon: Briefcase },
+  { id: "projects", title: "My Projects", icon: Briefcase },
 ];
 
 const MOBILE_HEADER_HEIGHT = 56; // Corresponds to h-14
@@ -161,11 +161,24 @@ export default function Portfolio() {
   };
 
   return (
-    <div className="flex justify-center w-full bg-background">
-      <div className="w-full max-w-4xl relative">
-        {/* @ts-ignore */}
-        <SidebarProvider style={{ "--sidebar-background": "transparent" }}>
-          <div className="flex w-full">
+    <SidebarProvider
+      //@ts-ignore
+      style={{ "--sidebar-background": "transparent" }}
+    >
+      {/* Mobile Header */}
+
+      <div className="flex justify-center w-full bg-background">
+        <div className="w-full max-w-4xl relative">
+          <header className="md:hidden sticky top-0 z-10 flex h-14 items-center bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+            <SidebarTrigger className="mr-4">
+              <Menu className="h-6 w-6" />
+              <span className="sr-only">Toggle sidebar</span>
+            </SidebarTrigger>
+            <h1 className="flex-1 text-lg font-semibold truncate">
+              {sections.find((s) => s.id === activeSection)?.title ?? ""}
+            </h1>
+          </header>
+          <div className="flex w-full  px-12 md:py-12 pb-12">
             {/* Sidebar */}
             <PortfolioSidebar
               sections={sections}
@@ -177,20 +190,9 @@ export default function Portfolio() {
 
             {/* Main Content Area */}
             <div className="flex-1 flex flex-col min-w-0">
-              {/* Mobile Header */}
-              <header className="md:hidden sticky top-0 z-10 flex h-14 items-center bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-                <SidebarTrigger className="mr-4">
-                  <Menu className="h-6 w-6" />
-                  <span className="sr-only">Toggle sidebar</span>
-                </SidebarTrigger>
-                <h1 className="flex-1 text-lg font-semibold truncate">
-                  {sections.find((s) => s.id === activeSection)?.title ?? ""}
-                </h1>
-              </header>
-
               {/* Content Sections */}
               <main className="flex-1">
-                <div className="px-12 pb-20 flex flex-col gap-32">
+                <div className="flex flex-col gap-32 ">
                   {/* Sections */}
                   <section id="about" key="about" className="pt-4 md:pt-4 ">
                     <AboutSection />
@@ -213,8 +215,8 @@ export default function Portfolio() {
               </main>
             </div>
           </div>
-        </SidebarProvider>
+        </div>
       </div>
-    </div>
+    </SidebarProvider>
   );
 }

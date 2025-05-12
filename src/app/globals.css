@@ -93,6 +93,7 @@ body {
 .sidebar-wrapper * {
   border: none !important;
   box-shadow: none !important;
+  font-family: var(--font-geist-sans);
 }
 
 .sidebar-no-border {
@@ -113,4 +114,17 @@ body {
 
 .shaped {
   shape-outside: circle(50%);
+}
+
+h1,
+h2,
+h3,
+body,
+p {
+  font-family: var(--font-geist-sans);
+}
+
+pre,
+code {
+  font-family: var(--font-geist-mono);
 }

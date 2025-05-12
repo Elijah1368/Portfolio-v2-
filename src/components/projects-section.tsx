@@ -97,7 +97,7 @@ export default function ProjectsSection({
               }
             >
               {/* Project Image */}
-              <div className="relative aspect-video md:aspect-square rounded-md overflow-hidden md:w-[110px] xs:w-full">
+              <div className="relative aspect-video md:aspect-square rounded-md overflow-hidden md:w-[110px] xs:w-full ">
                 <Image
                   src={`/abstract-geometric-shapes.png?height=400&width=400&query=${project.imageQuery}`}
                   alt={project.title}
@@ -107,7 +107,7 @@ export default function ProjectsSection({
               </div>
 
               {/* Project Content */}
-              <div className="space-y-4">
+              <div className="space-y-4 md:pt-0 pt-8">
                 <div>
                   <div className="flex items-center gap-2 flex-wrap">
                     <h3 className="font-bold text-primary">{project.title}</h3>
