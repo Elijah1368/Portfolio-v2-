@@ -59,7 +59,7 @@ export default function ProjectsSection({
   projects?: Project[];
 }) {
   const sectionRef = React.useRef(null);
-  const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
+  const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
 
   return (
     <div className="mx-auto py-8 md:pt-32" ref={sectionRef}>

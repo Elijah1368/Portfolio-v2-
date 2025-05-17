@@ -181,7 +181,7 @@ export function ExperienceSection({
   experiences?: ExperienceItem[];
 }) {
   const sectionRef = React.useRef(null);
-  const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
+  const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
 
   return (
     <div ref={sectionRef} className="mx-auto py-8 md:pt-32">

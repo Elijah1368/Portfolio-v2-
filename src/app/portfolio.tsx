@@ -207,7 +207,7 @@ export default function Portfolio() {
             />
 
             {/* Main Content Area */}
-            <div className="flex-1 flex flex-col min-w-0 md:pl-48 pb-32">
+            <div className="flex-1 flex flex-col min-w-0 md:pl-52 pb-32">
               {/* Content Sections */}
               <main className="flex-1">
                 <div className="flex flex-col gap-32 ">
