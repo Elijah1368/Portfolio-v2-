@@ -6,14 +6,28 @@ import { ThemeProvider, ThemeToggle } from "@/components/theme-provider";
 import AboutSection from "@/components/about-section";
 import { ExperienceSection } from "@/components/experience-section";
 import ProjectsSection from "@/components/projects-section";
-import PortfolioSidebar, { type Section } from "@/components/portfolio-sidebar";
-
+import PortfolioSidebar, {
+  SocialLink,
+  type Section,
+} from "@/components/portfolio-sidebar";
+import { type LucideIcon, Github, Linkedin } from "lucide-react";
 const sections: Section[] = [
   { id: "about", title: "About Me", icon: User },
   { id: "experience", title: "Experience", icon: Award },
   { id: "projects", title: "My Projects", icon: Briefcase },
 ];
 
+const content = {
+  title: "Fullstack Software Engineer",
+  socialLinks: [
+    { name: "GitHub", icon: Github, url: "https://github.com/Elijah1368" },
+    {
+      name: "LinkedIn",
+      icon: Linkedin,
+      url: "https://www.linkedin.com/in/elijah-amian-010a17159/",
+    },
+  ],
+};
 const MOBILE_HEADER_HEIGHT = 56; // Corresponds to h-14
 const OBSERVER_DEBOUNCE_MS = 200;
 const SCROLL_IGNORE_OBSERVER_MS = 800; // How long to ignore observer after a click (adjust based on smooth scroll duration)
@@ -168,34 +182,41 @@ export default function Portfolio() {
       {/* Mobile Header */}
 
       <div className="flex justify-center w-full bg-background">
-        <div className="w-full max-w-4xl relative">
+        <div className="w-full max-w-7xl relative">
           <header className="md:hidden sticky top-0 z-10 flex h-14 items-center bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <SidebarTrigger className="mr-4">
+            <SidebarTrigger className="mr-2 mb-0.5">
               <Menu className="h-6 w-6" />
               <span className="sr-only">Toggle sidebar</span>
             </SidebarTrigger>
-            <h1 className="flex-1 text-lg font-semibold truncate">
+            <h1 className="flex-1 text-lg font-light truncate uppercase text-muted-foreground tracking-tighter">
               {sections.find((s) => s.id === activeSection)?.title ?? ""}
             </h1>
+
+            <ThemeToggle />
           </header>
-          <div className="flex w-full  px-12 md:py-12 pb-12">
+          {/*for some reason, vertical padding doesn't work here what for sidebar tf*/}
+          <div className="flex w-full  md:px-12 sm:px-24 px-12">
             {/* Sidebar */}
             <PortfolioSidebar
               sections={sections}
               activeSection={activeSection}
               onSelectItem={handleSelectItem}
               userName="Elijah Amian"
-              userTitle="Fullstack Software Engineer"
+              userTitle={content.title}
+              socialLinks={content.socialLinks}
             />
 
             {/* Main Content Area */}
-            <div className="flex-1 flex flex-col min-w-0">
+            <div className="flex-1 flex flex-col min-w-0 md:pl-48 pb-32">
               {/* Content Sections */}
               <main className="flex-1">
                 <div className="flex flex-col gap-32 ">
                   {/* Sections */}
                   <section id="about" key="about" className="pt-4 md:pt-4 ">
-                    <AboutSection />
+                    <AboutSection
+                      title={content.title}
+                      socialLinks={content.socialLinks}
+                    />
                   </section>
                   <section
                     id="experience"

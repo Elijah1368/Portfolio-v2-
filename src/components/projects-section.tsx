@@ -13,6 +13,7 @@ interface Project {
   description: string;
   technologies: string[];
   imageQuery: string;
+  imageUrl: string;
   demoUrl?: string;
   githubUrl?: string;
 }
@@ -20,33 +21,35 @@ interface Project {
 const defaultProjects: Project[] = [
   {
     id: "ecommerce",
-    title: "E-commerce Website",
+    title: "Morphic Program Website",
     description:
-      "A full-featured online store built with Next.js and Stripe integration. Includes product catalog, shopping cart, user authentication, and payment processing. The admin dashboard allows for easy product management and order tracking.",
-    technologies: ["Next.js", "Stripe", "Tailwind CSS", "Prisma"],
-    imageQuery: "minimal e-commerce website design",
-    demoUrl: "https://example.com",
-    githubUrl: "https://github.com",
+      "A web platform for the National Institute of Health’s Morphic program",
+    technologies: ["React", "Javascript", "UI Design"],
+    imageUrl: "Morphic.png",
+    imageQuery: "Morphic Porgram web platform",
+    demoUrl: "https://morphic.bio/",
+    githubUrl: "https://github.com/Elijah1368/MorphicConsortium",
   },
   {
     id: "weather",
-    title: "Weather App",
-    description:
-      "A responsive weather application using React and the OpenWeatherMap API. Features include current weather conditions, 5-day forecast, location search, and automatic geolocation. The UI adapts to weather conditions with dynamic backgrounds and icons.",
-    technologies: ["React", "OpenWeatherMap API", "CSS Modules"],
-    imageQuery: "minimal weather app interface",
-    demoUrl: "https://example.com",
-    githubUrl: "https://github.com",
+    title: "Ninja Frog",
+    description: "2D platformer game made in pure javascript",
+    technologies: ["Javascript", "HTML", "CSS"],
+    imageUrl: "NinjaFrog.png",
+    imageQuery: "platformer game with a ninja frog",
+    demoUrl: "https://elijah1368.github.io/Ninja-Frog/",
+    githubUrl: "https://github.com/Elijah1368/Ninja-Frog",
   },
   {
     id: "task",
-    title: "Task Management System",
+    title: "Portfolio (v2)",
     description:
-      "A collaborative project management tool built with React and Node.js. Includes features like task assignment, due dates, priority levels, and real-time updates. Teams can organize tasks into projects and track progress with customizable dashboards.",
-    technologies: ["React", "Node.js", "Express", "MongoDB"],
-    imageQuery: "minimal task management dashboard",
-    demoUrl: "https://example.com",
-    githubUrl: "https://github.com",
+      "Old portfolio I made that’s heavily inspired by macOS desktop theme",
+    imageUrl: "Portfolio.png",
+    technologies: ["React", "Javascript", "UI Design"],
+    imageQuery: "Software engineer portfolio",
+    demoUrl: "https://elijah1368.github.io/PersonalPortfolio/",
+    githubUrl: "https://github.com/Elijah1368/PersonalPortfolio",
   },
 ];
 
@@ -56,26 +59,26 @@ export default function ProjectsSection({
   projects?: Project[];
 }) {
   const sectionRef = React.useRef(null);
-  const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
+  const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
 
   return (
-    <div className="max-w-4xl mx-auto" ref={sectionRef}>
+    <div className="mx-auto py-8 md:pt-32" ref={sectionRef}>
       <motion.h2
-        className="text-xl font-extrabold text-primary mb-2"
+        className="text-2xl font-extralight mb-4 text-muted-foreground tracking-tighter"
         initial={{ opacity: 0, y: 20 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
         transition={{ duration: 0.5 }}
       >
-        My Projects
+        MY PROJECTS
       </motion.h2>
 
       <motion.p
-        className="text-muted-foreground mb-8"
+        className="text-primary font-light mb-8"
         initial={{ opacity: 0, y: 20 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
         transition={{ duration: 0.5, delay: 0.1 }}
       >
-        A selection of my recent work and personal projects.
+        A selection of my work and personal projects.
       </motion.p>
 
       <div className="space-y-12">
@@ -99,7 +102,7 @@ export default function ProjectsSection({
               {/* Project Image */}
               <div className="relative aspect-video md:aspect-square rounded-md overflow-hidden md:w-[110px] xs:w-full ">
                 <Image
-                  src={`/abstract-geometric-shapes.png?height=400&width=400&query=${project.imageQuery}`}
+                  src={`/${project.imageUrl}?height=400&width=400&query=${project.imageQuery}`}
                   alt={project.title}
                   fill
                   className="object-cover transition-transform group-hover:scale-105"
@@ -110,14 +113,18 @@ export default function ProjectsSection({
               <div className="space-y-4 md:pt-0 pt-8">
                 <div>
                   <div className="flex items-center gap-2 flex-wrap">
-                    <h3 className="font-bold text-primary">{project.title}</h3>
+                    <h3 className="text-base font-semibold text-primary">
+                      {project.title}
+                    </h3>
                     {project.demoUrl && (
                       <ExternalLink className="h-3.5 w-3.5 text-muted-foreground inline-block ml-1" />
                     )}
                   </div>
                 </div>
 
-                <p className="text-muted-foreground">{project.description}</p>
+                <p className="text-primary font-light whitespace-normal">
+                  {project.description}
+                </p>
 
                 <div className="flex flex-wrap gap-1.5">
                   {project.technologies.map((tech) => (

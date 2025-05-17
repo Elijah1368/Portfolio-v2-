@@ -9,6 +9,9 @@ const config: Config = {
   ],
   mode: "jit",
   theme: {
+    screens: {
+      md: "1100px", // Modified from default 768px to 900px
+    },
     extend: {
       colors: {
         background: "hsl(var(--background))",

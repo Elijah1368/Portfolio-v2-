@@ -119,12 +119,14 @@ const defaultExperiences: ExperienceItem[] = [
       "At Qualcomm's NuviaCPU team (a startup they acquired), I helped replace expensive third-party verification software, eliminating $2M in annual costs. I engineered a concurrent architecture that improved data processing speeds by 700% for our 5M+ daily records, while developing half the tool's core functionality that supported projects like the Snapdragon X Elite processor. I also modernized our tech stack with Pydantic/Motor and Vite/TypeScript, implemented a GitLab pipeline that enabled daily releases instead of weekly ones. Working with this former startup team gave me valuable experience in developing sotware for engineers.",
     skills: [
       "Python",
+      "MongoDB",
+      "RabbitMQ",
+      "Kubernetes",
+      "Docker",
+      "Distributed Systems",
       "TypeScript",
       "React",
-      "Redux",
-      "Redis",
       "CI/CD",
-      "Vite",
     ],
     link: "https://qualcomm.com",
   },
@@ -137,7 +139,14 @@ const defaultExperiences: ExperienceItem[] = [
     endDate: "September 2022",
     description:
       "Our team needed an internal access management platform, so I took on the implementation challenge. I developed a solution that enabled managers to automate project access provisioning for new employees, significantly reducing onboarding time. The platform transformed a tedious manual process into a streamlined workflow, allowing new team members to become productive immediately rather than waiting days for proper access. This tool quickly became essential to our organization's efficiency.",
-    skills: ["HTML", "CSS", "JavaScript", "React", "Next.js"],
+    skills: [
+      "Python",
+      "MongoDB",
+      "Kubernetes",
+      "Docker",
+      "TypeScript",
+      "React",
+    ],
     link: "https://qualcomm.com",
   },
   {
@@ -160,8 +169,8 @@ const defaultExperiences: ExperienceItem[] = [
     startDate: "July 2022",
     endDate: "September 2022",
     description:
-      "In my first professional role, I was thrown into the deep end with a 20+ year old healthcare platform codebase. I executed a critical jQuery migration from 1.4 to 3.6, resolving over 30 breaking changes that enhanced security and improved page load times. I also implemented backend stress testing to identify performance bottlenecks—an intense but valuable experience that rapidly developed my skills in managing complex legacy systems.",
-    skills: ["jQuery", "JavaScript", "Performance Optimization", "Testing"],
+      "Tackled complex legacy code challenges by migrating from jQuery 1.4 to 3.6, meticulously resolving breaking changes while conducting stress testing to uncover performance bottlenecks.",
+    skills: ["jQuery", "JavaScript", "Testing"],
     link: "https://www.mcg.com/",
   },
 ];
@@ -172,21 +181,21 @@ export function ExperienceSection({
   experiences?: ExperienceItem[];
 }) {
   const sectionRef = React.useRef(null);
-  const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
+  const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
 
   return (
-    <div ref={sectionRef}>
+    <div ref={sectionRef} className="mx-auto py-8 md:pt-32">
       <motion.h2
-        className="text-xl font-extrabold text-primary mb-2"
+        className="text-2xl font-extralight mb-4 text-muted-foreground tracking-tighter"
         initial={{ opacity: 0, y: 20 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
         transition={{ duration: 0.5 }}
       >
-        Experience
+        EXPERIENCE
       </motion.h2>
 
       <motion.p
-        className="text-muted-foreground mb-8"
+        className="text-primary font-light mb-8"
         initial={{ opacity: 0, y: 20 }}
         animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
         transition={{ duration: 0.5, delay: 0.1 }}
@@ -216,7 +225,7 @@ export function ExperienceSection({
               }
             >
               <div className="space-y-1">
-                <div className="text-sm text-muted-foreground font-light">
+                <div className="text-sm text-muted-foreground font-light tracking-wider">
                   {/* Mobile: inline with dash and space, Desktop: stacked vertically */}
                   <div className="flex flex-row md:flex-col">
                     <span>{exp.startDate} —</span>
@@ -227,12 +236,12 @@ export function ExperienceSection({
               <div className="space-y-4">
                 <div>
                   <div className="flex items-center gap-x-2 gap-y-0 flex-wrap">
-                    <h3 className="text-base font-bold text-primary">
+                    <h3 className="text-base font-semibold text-primary">
                       {exp.position}
                     </h3>
                     <span className="text-muted-foreground font-light">at</span>
                     <div className="flex items-center gap-1">
-                      <span className="font-semibold text-primary/80">
+                      <span className="font-semibold text-primary">
                         {exp.company}
                       </span>
                       {exp.link && (
@@ -240,12 +249,12 @@ export function ExperienceSection({
                       )}
                     </div>
                   </div>
-                  <div className="flex items-center gap-1 text-sm text-muted-foreground mt-1 font-light">
+                  <div className="flex items-center gap-1 text-sm text-muted-foreground mt-1 font-light tracking-wider">
                     <MapPin className="h-3 w-3" />
                     <span>{exp.location}</span>
                   </div>
                 </div>
-                <p className="text-muted-foreground font-normal whitespace-normal clam">
+                <p className="text-primary font-light whitespace-normal">
                   {exp.description}
                 </p>
                 <div className="flex flex-wrap gap-2 min-h-[32px]">
