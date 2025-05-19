@@ -1,11 +1,11 @@
 "use client";
 
-import * as React from "react";
-import { motion, useInView } from "framer-motion";
-import { ExternalLink, Github } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { motion, useInView } from "framer-motion";
+import { ExternalLink } from "lucide-react";
 import Image from "next/image";
+import * as React from "react";
 
 interface Project {
   id: string;
