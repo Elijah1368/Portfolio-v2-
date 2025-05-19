@@ -195,7 +195,7 @@ export default function Portfolio() {
             <ThemeToggle />
           </header>
           {/*for some reason, vertical padding doesn't work here what for sidebar tf*/}
-          <div className="flex w-full  md:px-12 sm:px-24 px-12">
+          <div className="flex w-full  md:px-12 sm:px-24 px-8">
             {/* Sidebar */}
             <PortfolioSidebar
               sections={sections}

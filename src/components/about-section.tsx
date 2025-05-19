@@ -132,11 +132,10 @@ export default function AboutSection({
           </motion.p>
           <motion.p className="text-primary font-light" variants={itemVariants}>
             I'm Elijah, a software engineer at Qualcomm where I build tools that
-            help hardware engineers do their best work. I enjoy the challenge of
-            taking complex problems and turning them into elegant solutions.
-            When I'm not writing code, you'll find me trying to convince my cat
-            that 3 AM is not the optimal time to practice parkour across my
-            apartment.
+            help hardware engineers do their best work. When I'm not writing
+            code, you'll find me trying to convince my cat that 3 AM is not the
+            optimal time to practice its Olympic-level parkour routine,
+            especially when my face is part of the obstacle course.
           </motion.p>
 
           <motion.p className="text-primary font-light" variants={itemVariants}>
@@ -148,12 +147,14 @@ export default function AboutSection({
             empty cardboard boxes.
           </motion.p>
           <motion.p className="text-primary font-light" variants={itemVariants}>
-            I believe in shipping code that solves real problems, iterating
-            quickly, and learning constantly. Whether I'm optimizing database
-            queries, modernizing frontends, or figuring out why the neighborhood
-            strays have unanimously elected my parking spot as their official
-            meeting grounds, I'm drawn to puzzles that matter and solutions that
-            endure.
+            I ship code that solves real problems, iterate quickly, and never
+            stop learning. Whether optimizing databases or building intuitive
+            frontends, I'm driven by making things better. The satisfaction
+            comes from solving tough puzzles and creating resilient solutions.
+            After all, good engineering and caring for a cat require the same
+            skills: consistent maintenance, responding to unpredictable demands,
+            and accepting that no matter how well you plan, there will always be
+            unexpected 3AM wake-up calls.
           </motion.p>
         </motion.div>
       </section>
