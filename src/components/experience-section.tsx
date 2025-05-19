@@ -1,100 +1,11 @@
 "use client";
 
-import * as React from "react";
-import { motion, useInView } from "framer-motion";
-import { ExternalLink, MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-/**
- * Shapes text into a rough triangle/pyramid shape (longest line top).
- * @param {string} text The input text.
- * @param {number} numLines The desired number of lines.
- * @returns {string} The text formatted with newline characters.
- */
-function shapeTextIntoTriangle(text = "", numLines = 5) {
-  if (!text || typeof text !== "string") {
-    return "";
-  }
+import { motion, useInView } from "framer-motion";
+import { ExternalLink, MapPin } from "lucide-react";
+import * as React from "react";
 
-  const words = text.trim().split(/\s+/); // Split into words, handling multiple spaces
-  const totalWords = words.length;
-
-  if (totalWords === 0 || numLines <= 0) {
-    return "";
-  }
-  if (numLines === 1) {
-    return words.join(" "); // Return original text if only one line requested
-  }
-  if (numLines >= totalWords) {
-    // If more lines requested than words, put each word on its own line
-    return words.join("\n");
-  }
-
-  const lines = [];
-  let wordIndex = 0;
-
-  // Calculate the ideal number of words per line based on an arithmetic series
-  // Sum = n/2 * (a_1 + a_n). We want lines lengths roughly proportional to (numLines - i)
-  // Total elements in series: N = numLines
-  // Sum of weights (N + (N-1) + ... + 1) = N * (N + 1) / 2
-  const totalWeight = (numLines * (numLines + 1)) / 2;
-
-  // Pre-calculate ideal word counts per line to avoid recalculating
-  const idealCounts = [];
-  let assignedWords = 0;
-  for (let i = 0; i < numLines; i++) {
-    // Weight for line i (0-indexed, decreasing length) is proportional to (numLines - i)
-    const ideal = Math.round((totalWords * (numLines - i)) / totalWeight);
-    idealCounts.push(ideal);
-    assignedWords += ideal;
-  }
-
-  // Adjust counts slightly if rounding caused the total to be off
-  let difference = totalWords - assignedWords;
-  // Distribute difference somewhat evenly (e.g. add/subtract from middle lines)
-  let adjustIndex = Math.floor(numLines / 2);
-  while (difference !== 0) {
-    const adjustment = difference > 0 ? 1 : -1;
-    // Ensure count doesn't go below 1 (unless it's the very last line maybe)
-    if (
-      idealCounts[adjustIndex % numLines] + adjustment >= 1 ||
-      numLines === 1
-    ) {
-      idealCounts[adjustIndex % numLines] += adjustment;
-      difference -= adjustment;
-    }
-    adjustIndex++;
-    // Safety break to prevent infinite loops if adjustment is impossible
-    if (adjustIndex > numLines * 2) break;
-  }
-
-  // Assign words based on calculated counts
-  for (let i = 0; i < numLines; i++) {
-    const count = idealCounts[i];
-    // Ensure we don't try to take more words than available
-    const wordsToTake = Math.min(count, totalWords - wordIndex);
-
-    if (wordsToTake <= 0 && wordIndex >= totalWords) {
-      break; // Stop if no words left
-    }
-
-    // On the very last iteration, take all remaining words regardless of calculated count
-    const actualWordsToTake =
-      i === numLines - 1 ? totalWords - wordIndex : wordsToTake;
-
-    const endIndex = wordIndex + actualWordsToTake;
-    const lineWords = words.slice(wordIndex, endIndex);
-    lines.push(lineWords.join(" "));
-    wordIndex = endIndex;
-
-    if (wordIndex >= totalWords) {
-      break; // Stop if we've used all words
-    }
-  }
-
-  // Join the lines with newline characters
-  return lines.join("\n");
-}
 interface ExperienceItem {
   id: string;
   company: string;
@@ -181,8 +92,17 @@ export function ExperienceSection({
   experiences?: ExperienceItem[];
 }) {
   const sectionRef = React.useRef(null);
-  const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
+  const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
+  const [isMicrosoftEdge, setIsMicrosoftEdge] = React.useState(false);
 
+  React.useEffect(() => {
+    // Check if the browser is Edge
+    const isEdge = navigator.userAgent.includes("Edg");
+    setIsMicrosoftEdge(isEdge);
+  }, []);
+
+  // Apply different classes based on browser detection
+  const textClass = isMicrosoftEdge ? "text-xs" : "text-sm";
   return (
     <div ref={sectionRef} className="mx-auto py-8 md:pt-32">
       <motion.h2
@@ -225,7 +145,12 @@ export function ExperienceSection({
               }
             >
               <div className="space-y-1">
-                <div className="text-sm text-muted-foreground font-light tracking-wider">
+                <div
+                  className={cn(
+                    "text-muted-foreground font-light tracking-wider",
+                    textClass
+                  )}
+                >
                   {/* Mobile: inline with dash and space, Desktop: stacked vertically */}
                   <div className="flex flex-row md:flex-col">
                     <span>{exp.startDate} —</span>

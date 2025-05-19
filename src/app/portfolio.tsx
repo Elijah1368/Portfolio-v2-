@@ -1,16 +1,12 @@
 "use client";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { Award, Briefcase, Menu, User } from "lucide-react";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { ThemeProvider, ThemeToggle } from "@/components/theme-provider";
 import AboutSection from "@/components/about-section";
 import { ExperienceSection } from "@/components/experience-section";
+import PortfolioSidebar, { type Section } from "@/components/portfolio-sidebar";
 import ProjectsSection from "@/components/projects-section";
-import PortfolioSidebar, {
-  SocialLink,
-  type Section,
-} from "@/components/portfolio-sidebar";
-import { type LucideIcon, Github, Linkedin } from "lucide-react";
+import { ThemeToggle } from "@/components/theme-provider";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { Award, Briefcase, Github, Linkedin, Menu, User } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 const sections: Section[] = [
   { id: "about", title: "About Me", icon: User },
   { id: "experience", title: "Experience", icon: Award },
@@ -195,7 +191,7 @@ export default function Portfolio() {
             <ThemeToggle />
           </header>
           {/*for some reason, vertical padding doesn't work here what for sidebar tf*/}
-          <div className="flex w-full  md:px-12 sm:px-24 px-12">
+          <div className="flex w-full  md:px-12 sm:px-24 px-8">
             {/* Sidebar */}
             <PortfolioSidebar
               sections={sections}
@@ -207,7 +203,7 @@ export default function Portfolio() {
             />
 
             {/* Main Content Area */}
-            <div className="flex-1 flex flex-col min-w-0 md:pl-48 pb-32">
+            <div className="flex-1 flex flex-col min-w-0 md:pl-52 pb-32">
               {/* Content Sections */}
               <main className="flex-1">
                 <div className="flex flex-col gap-32 ">
